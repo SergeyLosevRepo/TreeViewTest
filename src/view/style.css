@@ -1,0 +1,22 @@
+.tree-view .virtual-flow .clipped-container .sheet .tree-cell .tree-disclosure-node .arrow {
+    -fx-alignment: top-center;
+    -fx-shape: null;
+    -fx-background-color: null;
+    -fx-background-size:cover;
+    -fx-padding: 8px;
+    -fx-background-image: url("folder.png");
+}
+.tree-view .virtual-flow .clipped-container .sheet .tree-cell:expanded .tree-disclosure-node .arrow {
+    -fx-rotate: 0;
+    -fx-shape: null;
+    -fx-background-color: null;
+    -fx-padding: 8px;
+
+    -fx-background-image: url("folder-open.png");
+}
+
+.tree-disclosure-node .virtual-flow .clipped-container .sheet .tree-cell .text{
+    -fx-font: bold italic 16px "Arial";
+
+}
+
