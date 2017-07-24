@@ -56,6 +56,7 @@ public class Controller {
             t.getChildren().addAll(createItemList(root[i]));} else t.getChildren().add(new TreeItem<String>("<folder is empty>"));
             list.add(t);
         }
+
         b.addListener( new ListChangeListener() {
             @Override
             public void onChanged(Change c) {
@@ -76,7 +77,7 @@ public class Controller {
                         item.expandedProperty().addListener(listener);
                         if (files[i].isDirectory()) {
                             item.getChildren().add(new TreeItem<String>(""));
-                        }
+                        } else item.setGraphic(new ImageView(new Image("view/file.png")));
                         tList.getChildren().add(item);
 
                     }
@@ -102,7 +103,7 @@ public class Controller {
         for (int i = 0; i < files.length; i++) {
             TreeItem<String> t = new TreeItem<>(files[i].getName());
             t.expandedProperty().addListener(listener);
-            if (files[i].isDirectory()) t.getChildren().add(new TreeItem<>("aaa"));
+            if (files[i].isDirectory()) t.getChildren().add(new TreeItem<>("aaa")); else t.setGraphic(new ImageView(new Image("view/file.png")));
             list.add(t);
         }
         return list;
