@@ -52,10 +52,11 @@ public class Controller {
         ArrayList<TreeItem<String>> list = new ArrayList<>();
         for (int i = 0; i < root.length; i++) {
             TreeItem<String> t = new TreeItem<>(root[i].getAbsolutePath());
-            t.getChildren().addAll(createItemList(root[i]));
+            if (root[i].list() != null){
+            t.getChildren().addAll(createItemList(root[i]));} else t.getChildren().add(new TreeItem<String>("<folder is empty>"));
             list.add(t);
         }
-        b.addListener(new ListChangeListener() {
+        b.addListener( new ListChangeListener() {
             @Override
             public void onChanged(Change c) {
                 TreeItem<String> treeItem = tList.getParent();
@@ -67,18 +68,19 @@ public class Controller {
                 }
                 s = s.substring(1, s.length());
                 s = treeItem.getValue().toString() + s;
-                File[] files = new File(s).listFiles();
+                if (new File(s).list() != null) {
+                    File[] files = new File(s).listFiles();
 
-                for (int i = 0; i < files.length; i++) {
-                    TreeItem<String> item = new TreeItem<String>(files[i].getName());
-                    item.expandedProperty().addListener(listener);
-                    if (files[i].isDirectory()) {
-                        item.getChildren().add(new TreeItem<String>(""));
+                    for (int i = 0; i < files.length; i++) {
+                        TreeItem<String> item = new TreeItem<String>(files[i].getName());
+                        item.expandedProperty().addListener(listener);
+                        if (files[i].isDirectory()) {
+                            item.getChildren().add(new TreeItem<String>(""));
+                        }
+                        tList.getChildren().add(item);
+
                     }
-                    tList.getChildren().add(item);
-
-                }
-
+                } else tList.getChildren().add(new TreeItem<String>("<folder is empty>"));
             }
         });
 
