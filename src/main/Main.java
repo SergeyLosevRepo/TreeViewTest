@@ -13,7 +13,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        try {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("../view/sample.fxml"));
 
@@ -28,9 +27,7 @@ public class Main extends Application {
 
         primaryStage.setScene(new Scene(root, 600, 1024));
         primaryStage.show();
-       } catch (ConcurrentModificationException e){
-            System.out.println("Load eror");
-        }
+
     }
 
 
@@ -38,4 +35,3 @@ public class Main extends Application {
         launch(args);
     }
 }
-

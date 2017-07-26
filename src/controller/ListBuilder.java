@@ -17,6 +17,10 @@ public class ListBuilder implements ICreateItem {
     private ChangeListener<Boolean> listener;
     private TreeView<String> vwTree;
 
+    public ListBuilder(TreeItem<String> tList, TreeView<String> vwTree) {
+        this.tList = tList;
+        this.vwTree = vwTree;
+    }
 
 
     public ListBuilder(TreeItem<String> tList, ChangeListener<Boolean> listener, TreeView<String> vwTree) {
@@ -35,24 +39,33 @@ public class ListBuilder implements ICreateItem {
         tList.getChildren().add(item);
     }
 
-    @Override
-    public synchronized void addItems() {
-        tList.getChildren().clear();
+    public String getDirectory(){
         TreeItem<String> treeItem = tList.getParent();
-        String s = tList.getValue().toString();
-        s = "\\" + s;
+        String directory = tList.getValue().toString();
+        directory = "\\" + directory;
         for (int i = 0; i < vwTree.getTreeItemLevel(tList)-2; i++) {
-            s = "\\" + treeItem.getValue().toString() + s;
+            directory = "\\" + treeItem.getValue().toString() + directory;
             treeItem = treeItem.getParent();
         }
-        s = s.substring(1, s.length());
-        if (!treeItem.getValue().toString().equals("My")) s = treeItem.getValue().toString() + s;
-        if (new File(s).list() != null) {
-            File[] files = new File(s).listFiles();
+        directory = directory.substring(1, directory.length());
+        if (!treeItem.getValue().toString().equals("My")) directory = treeItem.getValue().toString() + directory;
+        return directory;
+    }
+
+    @Override
+    public void addItems() {
+        tList.getChildren().clear();
+        String directory = getDirectory();
+        if (new File(directory).list() != null && new File(directory).list().length != 0) {
+            File[] files = new File(directory).listFiles();
             for (int i = 0; i < files.length; i++) {
                 createItem(files[i]);
             }
-        } else tList.getChildren().add(new TreeItem<String>("<folder is empty>"));
+        } else {
+            TreeItem<String> tEmpty = new TreeItem<>("<folder is empty>");
+            tEmpty.setGraphic(new ImageView(new Image("view/empty-folder.png")));
+            tList.getChildren().add(tEmpty);
+        }
     }
 
     @Override
