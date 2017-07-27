@@ -21,10 +21,9 @@ public class EditDialogController{
     @FXML public TextField txtFolName;
     @FXML public Button btnOk;
     @FXML public Button btnCancel;
+
     public Label lblDirectory;
-
     private String directory;
-
 
     public void setDirectory(String directory) {
         this.directory = directory;
@@ -38,14 +37,14 @@ public class EditDialogController{
         if (txtFolName.getText().isEmpty()) {
             DialogManager.showErorDialog("eror","Folder name is empty.");}
         else{
-            directory = directory+"\\"+txtFolName.getText();
-            if (new File(directory).mkdir())
+           String direct = directory+"\\"+txtFolName.getText();
+            if (new File(direct).mkdir())
                 {actionCancel(actionEvent);}
-            else {DialogManager.showInfoDialog("Info dialog", "Write new ");}
+            else {DialogManager.showInfoDialog("Info dialog", "Write new folder name");
+                direct = directory;
+            }
         }
     }
-
-
 
     public void actionCancel(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
