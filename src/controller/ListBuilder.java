@@ -9,9 +9,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.File;
 
-/**
- * Created by 802222 on 23.07.2017.
- */
+
 public class ListBuilder implements ICreateItem {
     private TreeItem<String> tList;
     private ChangeListener<Boolean> listener;
@@ -28,7 +26,7 @@ public class ListBuilder implements ICreateItem {
         this.listener = listener;
         this.vwTree = vwTree;
     }
-
+    // Создание объекта в TreeView по указанной дирректории.
     @Override
     public void createItem(File file) {
         TreeItem<String> item = new TreeItem<String>(file.getName());
@@ -38,7 +36,7 @@ public class ListBuilder implements ICreateItem {
         } else item.setGraphic(new ImageView(new Image("view/file.png")));
         tList.getChildren().add(item);
     }
-
+    //Получение дирректории из TreeView для выбранного объекта.
     public String getDirectory(){
         TreeItem<String> treeItem = tList.getParent();
         String directory = tList.getValue().toString();
@@ -51,7 +49,7 @@ public class ListBuilder implements ICreateItem {
         if (!treeItem.getValue().toString().equals("My")) directory = treeItem.getValue().toString() + directory;
         return directory;
     }
-
+    //Добавление объектов в TreeView . Сюда обращается Expand слушатель.
     @Override
     public void addItems() {
         tList.getChildren().clear();
@@ -67,7 +65,7 @@ public class ListBuilder implements ICreateItem {
             tList.getChildren().add(tEmpty);
         }
     }
-
+    // Очистка заданного TreeItem.
     @Override
     public void clearFolder() {
         tList.getChildren().clear();

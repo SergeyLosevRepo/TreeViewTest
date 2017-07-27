@@ -2,10 +2,6 @@ package main;
 
 import javafx.scene.control.Alert;
 
-
-/**
- * Created by User on 17.07.17.
- */
 public class DialogManager {
 
     public static void showInfoDialog(String title, String text){

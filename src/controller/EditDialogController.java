@@ -14,9 +14,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/**
- * Created by User on 13.07.17.
- */
 public class EditDialogController{
     @FXML public TextField txtFolName;
     @FXML public Button btnOk;
@@ -51,7 +48,5 @@ public class EditDialogController{
         Stage stage = (Stage) source.getScene().getWindow();
         stage.hide();
     }
-
-
 
 }

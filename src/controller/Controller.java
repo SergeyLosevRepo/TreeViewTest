@@ -18,7 +18,6 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.DialogManager;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -39,7 +38,7 @@ public class Controller {
     private FXMLLoader fxmlLoader = new FXMLLoader();
     private String directory;
 
-
+    // слушатель на событие Expanded TreeItem.
     private ChangeListener<Boolean> listener = new ChangeListener<Boolean>() {
         @Override
         public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -85,6 +84,7 @@ public class Controller {
     }
 
     public void initialize() throws IOException {
+        // Добавляем исходные каталоги в TreeView и скрываем корневой каталог.
         for (int i = 0; i < root.length; i++) {
             if (root[i].exists()){TreeItem<String> t = new TreeItem<>(root[i].getAbsolutePath());
             t.expandedProperty().addListener(listener);
@@ -96,14 +96,15 @@ public class Controller {
         initLoader();
     }
 
+    // Условия возникновения ContextMenu в главном окне.
     public void passContext(ContextMenuEvent contextMenuEvent) {
-
         if (vwTree.getSelectionModel().isEmpty()) menuContext.hide(); else{
         TreeItem<String> item = (TreeItem<String>) vwTree.getSelectionModel().getSelectedItem();
         if (item.getValue().toString().equals("<folder is empty>")) menuContext.hide();
         if (item.getChildren().isEmpty()) menuContext.hide();}
     }
 
+    // Создание каталога внутри выбранного Item
     public void preessCreateFolder(ActionEvent actionEvent) {
         TreeItem<String> item = (TreeItem<String>) vwTree.getSelectionModel().getSelectedItem();
         ListBuilder listBuilder = new ListBuilder(item, vwTree);
@@ -120,7 +121,7 @@ public class Controller {
         item.getChildren().add(folNameItem);
     }
 
-
+    // Удаление каталога выбранного в TreeItem
     public void pressDeleteFolder(ActionEvent actionEvent) {
         TreeItem<String> item = (TreeItem<String>) vwTree.getSelectionModel().getSelectedItem();
         ListBuilder listBuilder = new ListBuilder(item, vwTree);
@@ -141,8 +142,8 @@ public class Controller {
         }
     }
 
-    public void delete(File file)
-    {
+    // Удаление директории
+    public void delete(File file) {
         if (!file.exists()) return;
 
         if (file.isDirectory()) {
@@ -154,6 +155,7 @@ public class Controller {
         }
     }
 
+    //Инициализация окна ввода имени
     private void showDialog() {
         if (editDialogStage == null) {
             editDialogStage = new Stage();
@@ -169,6 +171,7 @@ public class Controller {
         editDialogStage.showAndWait();
     }
 
+    //Загрузка данных второго окна.
     private void initLoader() {
         try {
             fxmlLoader.setLocation(getClass().getResource("../view/edit.fxml"));
