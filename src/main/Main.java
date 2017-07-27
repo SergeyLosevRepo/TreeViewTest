@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.ConcurrentModificationException;
@@ -21,6 +22,7 @@ public class Main extends Application {
         controller.setStage(primaryStage);
 
         primaryStage.setTitle("Data Manager");
+        primaryStage.getIcons().add(new Image("view/folder.png"));
 
         primaryStage.setMinWidth(600);
         primaryStage.setMinHeight(400);
