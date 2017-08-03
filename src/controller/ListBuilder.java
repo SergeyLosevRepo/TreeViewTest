@@ -57,7 +57,7 @@ public class ListBuilder implements ICreateItem {
         if (new File(directory).list() != null && new File(directory).list().length != 0) {
             File[] files = new File(directory).listFiles();
             for (int i = 0; i < files.length; i++) {
-                createItem(files[i]);
+                if (files[i].exists())createItem(files[i]);
             }
         } else {
             TreeItem<String> tEmpty = new TreeItem<>("<folder is empty>");

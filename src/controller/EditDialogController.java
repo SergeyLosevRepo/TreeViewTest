@@ -21,6 +21,11 @@ public class EditDialogController{
 
     public Label lblDirectory;
     private String directory;
+    private Boolean createFolder = false;
+
+    public Boolean isCreateFolder() {
+        return createFolder;
+    }
 
     public void setDirectory(String directory) {
         this.directory = directory;
@@ -35,9 +40,9 @@ public class EditDialogController{
             DialogManager.showErorDialog("eror","Folder name is empty.");}
         else{
            String direct = directory+"\\"+txtFolName.getText();
-            if (new File(direct).mkdir())
+            if (createFolder = new File(direct).mkdir())
                 {actionCancel(actionEvent);}
-            else {DialogManager.showInfoDialog("Info dialog", "Write new folder name");
+            else {DialogManager.showInfoDialog("Info dialog", "The folder can not be created");
                 direct = directory;
             }
         }

@@ -46,31 +46,33 @@ public class Controller {
             TreeItem tItem = (TreeItem) bb.getBean();
             ListBuilder item = new ListBuilder(tItem, listener, vwTree);
             if (tItem.isExpanded()) {
-                tItem.getChildren().clear();
-                TreeItem<String> itLoad = new TreeItem<String>("<folder is load>");
-                itLoad.setGraphic(new ImageView(new Image("view/folder-refresh.png")));
-                tItem.getChildren().add(itLoad);
-                Service process = new Service() {
-                    @Override
-                    protected Task createTask() {
-                        return new Task() {
-                            @Override
-                            protected Void call() throws Exception {
+                TreeItem<String> tItemChil = (TreeItem<String>) tItem.getChildren().get(0);
+                if (tItem.getChildren().size() == 1 && tItemChil.getValue().equals("")) {
+                    tItem.getChildren().clear();
+                    TreeItem<String> itLoad = new TreeItem<String>("<folder is load>");
+                    itLoad.setGraphic(new ImageView(new Image("view/folder-refresh.png")));
+                    tItem.getChildren().add(itLoad);
+                    Service process = new Service() {
+                        @Override
+                        protected Task createTask() {
+                            return new Task() {
+                                @Override
+                                protected Void call() throws Exception {
 
-                                Thread.sleep(2000);
-                                return null;
-                            }
-                        };
-                    }
-                };
+                                    Thread.sleep(2000);
+                                    return null;
+                                }
+                            };
+                        }
+                    };
 
-                process.setOnSucceeded( e -> {
-                    item.addItems();
-                });
+                    process.setOnSucceeded(e -> {
+                        item.addItems();
+                    });
 
-                process.start();
-            }else if (!tItem.isExpanded()){
-                item.clearFolder();
+                    process.start();
+                }
+
             }
         }
     };
@@ -113,12 +115,14 @@ public class Controller {
         editDialogController.lblDirectory.setText(directory);
         editDialogController.setDirectory(directory);
         showDialog();
-        TreeItem<String> folNameItem = new TreeItem<>(editDialogController.getFolName());
-        TreeItem<String> tEmpty = new TreeItem<>("");
-        folNameItem.getChildren().add(tEmpty);
-        folNameItem.expandedProperty().addListener(listener);
-        if (item.getChildren().get(0).getValue().toString().equals("<folder is empty>")) item.getChildren().clear();
-        item.getChildren().add(folNameItem);
+        if (editDialogController.isCreateFolder()){
+            TreeItem<String> folNameItem = new TreeItem<>(editDialogController.getFolName());
+            TreeItem<String> tNon = new TreeItem<>("");
+            folNameItem.getChildren().add(tNon);
+            folNameItem.expandedProperty().addListener(listener);
+            if (item.getChildren().get(0).getValue().toString().equals("<folder is empty>")) item.getChildren().clear();
+            item.getChildren().add(folNameItem);
+        }
     }
 
     // Удаление каталога выбранного в TreeItem
@@ -136,7 +140,12 @@ public class Controller {
             delete(file);
             System.out.println(file.exists());
             if (file.exists()) {DialogManager.showErorDialog("Delete Error", "The directory can not be deleted."); return;}
+            TreeItem<String> tItemParent = item.getParent();
             item.getParent().getChildren().remove(item);
+            if (tItemParent.getChildren().size() == 0){
+                TreeItem<String> tEmpty = new TreeItem<>("<folder is empty>");
+                tEmpty.setGraphic(new ImageView(new Image("view/empty-folder.png")));
+                tItemParent.getChildren().add(tEmpty);}
         } else {
             return;
         }
