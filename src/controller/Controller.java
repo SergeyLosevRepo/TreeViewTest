@@ -111,10 +111,9 @@ public class Controller {
         TreeItem<String> item = (TreeItem<String>) vwTree.getSelectionModel().getSelectedItem();
         ListBuilder listBuilder = new ListBuilder(item, vwTree);
         this.directory = listBuilder.getDirectory();
-        editDialogController.txtFolName.clear();
         editDialogController.lblDirectory.setText(directory);
         editDialogController.setDirectory(directory);
-        showDialog();
+        showDialog("Create folder");
         if (editDialogController.isCreateFolder()){
             TreeItem<String> folNameItem = new TreeItem<>(editDialogController.getFolName());
             TreeItem<String> tNon = new TreeItem<>("");
@@ -138,7 +137,6 @@ public class Controller {
         if (result.get() == ButtonType.OK){
             File file = new File(directory);
             delete(file);
-            System.out.println(file.exists());
             if (file.exists()) {DialogManager.showErorDialog("Delete Error", "The directory can not be deleted."); return;}
             TreeItem<String> tItemParent = item.getParent();
             item.getParent().getChildren().remove(item);
@@ -155,7 +153,7 @@ public class Controller {
     public void delete(File file) {
         if (!file.exists()) return;
 
-        if (file.isDirectory()) {
+        if (file.isDirectory() && file.list() != null) {
             for (File f : file.listFiles())
                     delete(f);
                 file.delete();
@@ -165,20 +163,26 @@ public class Controller {
     }
 
     //Инициализация окна ввода имени
-    private void showDialog() {
-        if (editDialogStage == null) {
+    private void showDialog(String s) {
+        if (editDialogStage == null){
             editDialogStage = new Stage();
-            editDialogStage.setTitle("Create folder");
+            editDialogStage.setTitle(s);
             editDialogStage.setMinHeight(150);
             editDialogStage.setMinWidth(300);
             editDialogStage.setResizable(false);
             editDialogStage.setScene(new Scene(fxmlEdit));
             editDialogStage.initModality(Modality.WINDOW_MODAL);
             editDialogStage.initOwner(stage);
-        }
-
-        editDialogStage.showAndWait();
+            editDialogStage.getIcons().add(new Image("view/folder.png"));
+            editDialogController.setEditDialogStage(editDialogStage);
+            editDialogStage.showAndWait();}
+        else{
+            editDialogController.setCreateFolder(false);
+            editDialogStage.setTitle(s);
+            editDialogController.txtFolName.clear();
+            editDialogStage.showAndWait();}
     }
+
 
     //Загрузка данных второго окна.
     private void initLoader() {
@@ -189,5 +193,17 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void pressRename(ActionEvent actionEvent) {
+        TreeItem<String> item = (TreeItem<String>) vwTree.getSelectionModel().getSelectedItem();
+        ListBuilder listBuilder = new ListBuilder(item, vwTree);
+        this.directory = listBuilder.getDirectory();
+        editDialogController.setEditDialogStage(editDialogStage);
+        editDialogController.setDirectory(directory);
+        editDialogController.lblDirectory.setText(directory);
+        showDialog("Rename folder");
+        if (editDialogController.isCreateFolder()) item.setValue(editDialogController.getFolName());
+
     }
 }

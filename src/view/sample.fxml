@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
    <children>
       <TreeView fx:id="vwTree" onContextMenuRequested="#passContext" prefHeight="200.0" prefWidth="200.0" styleClass="tree-disclosure-node" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <contextMenu>
             <ContextMenu fx:id="menuContext">
               <items>
                   <MenuItem fx:id="miCreate" mnemonicParsing="false" onAction="#preessCreateFolder" text="Create new folder" />
+                  <MenuItem fx:id="miRename" mnemonicParsing="false" onAction="#pressRename" text="Rename folder" />
                 <MenuItem mnemonicParsing="false" onAction="#pressDeleteFolder" text="Delete Folder" />
               </items>
             </ContextMenu>

@@ -22,6 +22,15 @@ public class EditDialogController{
     public Label lblDirectory;
     private String directory;
     private Boolean createFolder = false;
+    private Stage editDialogStage;
+
+    public void setEditDialogStage(Stage editDialogStage) {
+        this.editDialogStage = editDialogStage;
+    }
+
+    public void setCreateFolder(Boolean createFolder) {
+        this.createFolder = createFolder;
+    }
 
     public Boolean isCreateFolder() {
         return createFolder;
@@ -39,11 +48,27 @@ public class EditDialogController{
         if (txtFolName.getText().isEmpty()) {
             DialogManager.showErorDialog("eror","Folder name is empty.");}
         else{
-           String direct = directory+"\\"+txtFolName.getText();
-            if (createFolder = new File(direct).mkdir())
-                {actionCancel(actionEvent);}
-            else {DialogManager.showInfoDialog("Info dialog", "The folder can not be created");
-                direct = directory;
+            if (editDialogStage.getTitle().equals("Create folder")) {
+                String direct = directory + "\\" + txtFolName.getText();
+                if (createFolder = new File(direct).mkdir()) {
+                    actionCancel(actionEvent);
+                } else {
+                    DialogManager.showInfoDialog("Info dialog", "The folder can not be created");
+                    direct = directory;
+                }
+            }
+            if (editDialogStage.getTitle().equals("Rename folder")) {
+                String direct = directory.substring(0, directory.lastIndexOf("\\"));
+                System.out.println(directory);
+                direct = direct + "\\" + txtFolName.getText();
+                System.out.println(direct);
+                if (createFolder = new File(directory).renameTo(new File(direct))) {
+                    actionCancel(actionEvent);
+                } else {
+                    DialogManager.showInfoDialog("Info dialog", "The folder can not be created");
+                    direct = directory;
+                }
+
             }
         }
     }
